@@ -1,13 +1,25 @@
 {
   "name": "pharmchain",
   "version": "1.0.0",
-  "description": "",
+  "description": "Blockchain-Based Pharmaceutical Supply Chain Management System",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:amoy": "hardhat run scripts/deploy.js --network polygonAmoy",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "node": "hardhat node"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "pharmaceutical",
+    "supply-chain",
+    "smart-contracts",
+    "polygon",
+    "web3"
+  ],
+  "author": "Group 13",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
