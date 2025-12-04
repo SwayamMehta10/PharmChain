@@ -26,6 +26,9 @@ const Navbar = () => {
                             <Link to="/scan" className="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                                 Scan Product
                             </Link>
+                            <Link to="/regulator" className="text-gray-500 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                Regulator
+                            </Link>
                         </div>
                     </div>
 

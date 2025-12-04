@@ -4,6 +4,7 @@ import { CONTRACT_ADDRESSES } from '../utils/constants';
 import PharmaSupplyChainABI from '../utils/abis/PharmaSupplyChain.json';
 import PharmaRolesABI from '../utils/abis/PharmaRoles.json';
 import ProductRegistryABI from '../utils/abis/ProductRegistry.json';
+import VerificationServiceABI from '../utils/abis/VerificationService.json';
 
 const Web3Context = createContext();
 
@@ -14,7 +15,8 @@ export const Web3Provider = ({ children }) => {
     const [contracts, setContracts] = useState({
         supplyChain: null,
         roles: null,
-        registry: null
+        registry: null,
+        verification: null
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -72,7 +74,13 @@ export const Web3Provider = ({ children }) => {
                         signer
                     );
 
-                    setContracts({ supplyChain, roles, registry });
+                    const verification = new ethers.Contract(
+                        CONTRACT_ADDRESSES.VerificationService,
+                        VerificationServiceABI.abi,
+                        signer
+                    );
+
+                    setContracts({ supplyChain, roles, registry, verification });
                     setLoading(false);
                 } catch (err) {
                     console.error("Error initializing contracts:", err);

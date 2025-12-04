@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import ProductView from './pages/ProductView';
+import RegulatorDashboard from './pages/RegulatorDashboard';
 import { useWeb3 } from './context/Web3Context';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/scan" element={<ProductView />} />
+            <Route path="/regulator" element={<RegulatorDashboard />} />
           </Routes>
         </main>
       </div>
