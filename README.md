@@ -64,7 +64,7 @@ MetaMask browser extension
 Git
 ```
 
-### npm Packages (planned)
+### npm Packages
 ```json
 {
   "dependencies": {
@@ -79,6 +79,35 @@ Git
   }
 }
 ```
+### PharmChain UI Walkthrough
+We have successfully built the frontend User Interface for the PharmChain application.
+
+Features Implemented
+1.⁠ ⁠Modern UI with Tailwind CSS
+Clean, responsive design using Tailwind CSS.
+Navigation bar with wallet connection status.
+
+2.⁠ ⁠Web3 Integration
+Wallet Connection: Connects to MetaMask.
+Contract Integration: Interacts with PharmaSupplyChain, PharmaRoles, and ProductRegistry contracts.
+Context Provider: Manages state across the application.
+
+3.⁠ ⁠Manufacturer Dashboard
+Product Registration: Form to register new products on the blockchain.
+Input Fields: Name, Batch Number, Expiry Date, IPFS Hash.
+
+4.⁠ ⁠Supply Chain Actions
+Update Status: Scan product (simulate) and update status (Originated -> In Transit -> Stored -> Delivered).
+Transfer Ownership: Transfer product ownership to another address (Distributor/Retailer).
+
+5.⁠ ⁠Consumer View (Product History)
+Track Product: Search by Product ID.
+Verification: Displays product details, current owner, and verification status.
+Timeline: Visual progress of the product through the supply chain.
+
+6.⁠ ⁠Regulator Dashboard
+Product Verification: Interface for regulators to verify registered products.
+Role-Based Access: Only accessible to accounts with REGULATOR_ROLE.
 
 ## Setup Instructions
 ### 1. Clone the Repository
@@ -90,7 +119,6 @@ git clone https://github.com/SwayamMehta10/PharmChain
 ```bash
 npm install
 ```
-
 ### 3. Configure Environment Variables
 Create a `.env` file in the root directory and copy the template from `.env.example`:
 
@@ -108,17 +136,99 @@ IPFS_PROJECT_SECRET=your_ipfs_project_secret
 npx hardhat compile
 ```
 
-### 5. Run Tests
-```bash
-npx hardhat test
+### 5. Testing Guide
+Follow these steps to deploy the contracts and test the frontend application.
+
+1.⁠ ⁠Start Local Blockchain
+Open a terminal in the root directory (PharmChain) and start the local Hardhat node:
+
+npx hardhat node
+
+Keep this terminal running.
+
+2.⁠ ⁠Deploy Contracts
+Open a new terminal in the root directory and run the deployment script:
+
+npx hardhat run scripts/deploy.js --network localhost
+
+This will deploy the contracts and print their addresses. It also grants the MANUFACTURER_ROLE and REGULATOR_ROLE to the first account (Account #0).
+
+3.⁠ ⁠Update Frontend Configuration
+Copy the addresses from the deployment output and update 
+frontend/src/utils/constants.js
+:
+
+export const CONTRACT_ADDRESSES = {
+  PharmaSupplyChain: "0x...", 
+  PharmaRoles: "0x...",       
+  ProductRegistry: "0x...",
+  VerificationService: "0x..."
+};
+
+4.⁠ ⁠Start Frontend
+In the frontend directory, start the React app:
+
+cd frontend
+npm run dev
+Open the URL (usually http://localhost:5173) in your browser.
+
+5.⁠ ⁠Configure MetaMask
+Network: Add a custom network for Localhost 8545 (Chain ID: 31337, RPC: http://127.0.0.1:8545).
+Import Account: Import Account #0 from the npx hardhat node output using its private key. This account has both Manufacturer and Regulator roles.
+Connect: Connect this account to the website.
+
+6.⁠ ⁠Test Scenarios
+Scenario A: Manufacturer Registration
+-Go to the Dashboard.
+-Fill in the "Register New Product" form:
+  Name: "Aspirin"
+  Batch: "BATCH001"
+  Expiry: Select a future date.
+  IPFS Hash: "QmTest..." (any string works for now).
+-Click Register Product.
+-Confirm the transaction in MetaMask.
+-Wait for the alert "Product registered successfully!".
+
+Scenario B: Supply Chain Updates
+-In the Dashboard, look at the "Supply Chain Actions" section.
+-Update Status:
+  Enter Product ID: 1 (IDs start at 1).
+  Select Status: "In Transit".
+-Click Update Status and confirm.
+-Transfer Ownership:
+  Enter Product ID: 1.
+  Enter New Owner Address (you can use another account from hardhat node).
+-Click Transfer Ownership and confirm.
+
+Scenario C: Regulator Verification
+-Go to the Regulator page (click "Regulator" in navbar).
+-Enter Product ID: 1.
+-Click Verify Product.
+-Confirm the transaction in MetaMask.
+-You should see a success message.
+
+Scenario D: Consumer Verification
+-Go to the Scan Product page (or click "Scan Product" in navbar).
+-Enter Product ID: 1.
+-Click Verify Product.
+-You should see the product details.
+-Check the Verification Status: It should now say "Verified" (Green) instead of "Pending Verification".
+
+7.⁠ ⁠Managing Roles (Optional)
+By default, the deployment script gives Account #0 both Manufacturer and Regulator roles. If you want to give the Regulator role to a different account (e.g., Account #1):
+
+Open 
+scripts/grant-role.js
+.
+Update PHARMA_ROLES_ADDRESS with your deployed address (from 
+constants.js
+).
+Update targetAddress with the address you want to grant the role to.
+Run the script:
+npx hardhat run scripts/grant-role.js --network localhost
 ```
 
-### 6. Deploy to Testnet
-```bash
-npx hardhat run scripts/deploy.js --network polygonAmoy
-```
-
-## How to Use (Tentative)
+### How to Use (Tentative)
 ### For Manufacturers
 1. Connect MetaMask wallet
 2. Register new drug products with unique identifiers
@@ -143,17 +253,3 @@ npx hardhat run scripts/deploy.js --network polygonAmoy
 3. Verify compliance records
 4. Issue digital certifications
 
-## Smart Contract Components
-### 1. PharmaSupplyChain.sol (Main Contract)
-- Product registration and management
-- Ownership transfer logic
-- Status updates and event logging
-- Access control implementation
-
-(Below are planned)
-
-### 2. AccessControl.sol
-
-### 3. ProductRegistry.sol
-
-### 4. VerificationService.sol
