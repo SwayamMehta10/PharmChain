@@ -80,7 +80,7 @@ Git
 }
 ```
 ### PharmChain UI Walkthrough
-We have successfully built the frontend User Interface for the PharmChain application.
+```We have successfully built the frontend User Interface for the PharmChain application.
 
 Features Implemented
 1.⁠ ⁠Modern UI with Tailwind CSS
