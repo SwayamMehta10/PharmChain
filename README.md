@@ -108,7 +108,7 @@ Timeline: Visual progress of the product through the supply chain.
 6.⁠ ⁠Regulator Dashboard
 Product Verification: Interface for regulators to verify registered products.
 Role-Based Access: Only accessible to accounts with REGULATOR_ROLE.
-
+```
 ## Setup Instructions
 ### 1. Clone the Repository
 ```bash
@@ -226,7 +226,7 @@ constants.js
 Update targetAddress with the address you want to grant the role to.
 Run the script:
 npx hardhat run scripts/grant-role.js --network localhost
-```
+
 
 ### How to Use (Tentative)
 ### For Manufacturers
